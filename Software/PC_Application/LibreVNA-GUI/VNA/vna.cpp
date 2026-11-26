@@ -90,11 +90,11 @@ VNA::VNA(AppWindow *window, QString name)
     connect(&traceModel, &TraceModel::requiredExcitation, this, &VNA::ExcitationRequired);
 
     // Create menu entries and connections
-    auto calMenu = new QMenu("Calibration", window);
+    auto calMenu = new QMenu(tr("Calibration"), window);
     window->menuBar()->insertMenu(window->getUi()->menuWindow->menuAction(), calMenu);
     actions.insert(calMenu->menuAction());
-    auto calLoad = calMenu->addAction("Load");
-    saveCal = calMenu->addAction("Save");
+    auto calLoad = calMenu->addAction(tr("Load"));
+    saveCal = calMenu->addAction(tr("Save"));
     calMenu->addSeparator();
 
     connect(calLoad, &QAction::triggered, [=](){
@@ -112,12 +112,12 @@ VNA::VNA(AppWindow *window, QString name)
 
     connect(&cal, &Calibration::startMeasurements, this, &VNA::StartCalibrationMeasurements);
 
-    auto calData = calMenu->addAction("Calibration Measurements");
+    auto calData = calMenu->addAction(tr("Calibration Measurements"));
     connect(calData, &QAction::triggered, [=](){
         cal.edit(&traceModel);
     });
 
-    auto calEditKit = calMenu->addAction("Edit Calibration Kit");
+    auto calEditKit = calMenu->addAction(tr("Edit Calibration Kit"));
     connect(calEditKit, &QAction::triggered, [=](){
         cal.getKit().edit([=](){
             if(cal.getCaltype().type != Calibration::Type::None) {
@@ -126,7 +126,7 @@ VNA::VNA(AppWindow *window, QString name)
         });
     });
 
-    auto calElectronic = calMenu->addAction("Electronic Calibration");
+    auto calElectronic = calMenu->addAction(tr("Electronic Calibration"));
     connect(calElectronic, &QAction::triggered, [=](){
         auto d = new LibreCALDialog(&cal);
         d->show();
@@ -134,7 +134,7 @@ VNA::VNA(AppWindow *window, QString name)
 
     calMenu->addSeparator();
 
-    auto calViewTerms = calMenu->addAction("View error term model");
+    auto calViewTerms = calMenu->addAction(tr("View error term model"));
     connect(calViewTerms, &QAction::triggered, [=](){
         auto dialog = new CalibrationViewDialog(&cal, DeviceDriver::getInfo(window->getDevice()).Limits.VNA.ports);
         if(AppWindow::showGUI()) {
@@ -144,7 +144,7 @@ VNA::VNA(AppWindow *window, QString name)
 
     calMenu->addSeparator();
 
-    auto calImportTerms = calMenu->addAction("Import error terms as traces");
+    auto calImportTerms = calMenu->addAction(tr("Import error terms as traces"));
     calImportTerms->setEnabled(false);
     connect(calImportTerms, &QAction::triggered, [=](){
         auto import = new TraceImportDialog(traceModel, cal.getErrorTermTraces());
@@ -152,7 +152,7 @@ VNA::VNA(AppWindow *window, QString name)
             import->show();
         }
     });
-    auto calImportMeas = calMenu->addAction("Import measurements as traces");
+    auto calImportMeas = calMenu->addAction(tr("Import measurements as traces"));
     calImportMeas->setEnabled(false);
     connect(calImportMeas, &QAction::triggered, [=](){
         auto import = new TraceImportDialog(traceModel, cal.getMeasurementTraces());
@@ -162,7 +162,7 @@ VNA::VNA(AppWindow *window, QString name)
     });
 
     calMenu->addSeparator();
-    auto calApplyToTraces = calMenu->addAction("Apply to traces...");
+    auto calApplyToTraces = calMenu->addAction(tr("Apply to traces..."));
     calApplyToTraces->setEnabled(false);
     connect(calApplyToTraces, &QAction::triggered, [=]() {
         auto manualCalibration = new ManualCalibrationDialog(traceModel, &cal);
@@ -202,20 +202,20 @@ VNA::VNA(AppWindow *window, QString name)
 //    portExtension.setCalkit(&cal.getCalibrationKit());
 
     // De-embedding menu
-    auto menuDeembed = new QMenu("De-embedding", window);
+    auto menuDeembed = new QMenu(tr("De-embedding"), window);
     window->menuBar()->insertMenu(window->getUi()->menuWindow->menuAction(), menuDeembed);
     actions.insert(menuDeembed->menuAction());
-    auto confDeembed = new QAction("Setup...", menuDeembed);
+    auto confDeembed = new QAction(tr("Setup..."), menuDeembed);
     confDeembed->setMenuRole(QAction::NoRole);
     menuDeembed->addAction(confDeembed);
     connect(confDeembed, &QAction::triggered, &deembedding, &Deembedding::configure);
 
-    enableDeembeddingAction = menuDeembed->addAction("De-embed VNA samples");
+    enableDeembeddingAction = menuDeembed->addAction(tr("De-embed VNA samples"));
     enableDeembeddingAction->setCheckable(true);
     enableDeembeddingAction->setEnabled(false);
     connect(enableDeembeddingAction, &QAction::toggled, this, &VNA::EnableDeembedding);
 
-    auto manualDeembed = menuDeembed->addAction("De-embed traces...");
+    auto manualDeembed = menuDeembed->addAction(tr("De-embed traces..."));
     manualDeembed->setEnabled(false);
     connect(manualDeembed, &QAction::triggered, [=]() {
         auto manualDeembedding = new ManualDeembeddingDialog(traceModel, &deembedding);
@@ -248,17 +248,17 @@ VNA::VNA(AppWindow *window, QString name)
     });
 
     // Tools menu
-    auto toolsMenu = new QMenu("Tools", window);
+    auto toolsMenu = new QMenu(tr("Tools"), window);
     window->menuBar()->insertMenu(window->getUi()->menuWindow->menuAction(), toolsMenu);
     actions.insert(toolsMenu->menuAction());
-    auto impedanceMatching = toolsMenu->addAction("Impedance Matching");
+    auto impedanceMatching = toolsMenu->addAction(tr("Impedance Matching"));
     connect(impedanceMatching, &QAction::triggered, this, &VNA::StartImpedanceMatching);
-    auto mixedMode = toolsMenu->addAction("Mixed Mode Conversion");
+    auto mixedMode = toolsMenu->addAction(tr("Mixed Mode Conversion"));
     connect(mixedMode, &QAction::triggered, this, &VNA::StartMixedModeConversion);
 
-    defaultCalMenu = new QMenu("Default Calibration", window);
-    assignDefaultCal = defaultCalMenu->addAction("Assign...");
-    removeDefaultCal = defaultCalMenu->addAction("Remove");
+    defaultCalMenu = new QMenu(tr("Default Calibration"), window);
+    assignDefaultCal = defaultCalMenu->addAction(tr("Assign..."));
+    removeDefaultCal = defaultCalMenu->addAction(tr("Remove"));
     removeDefaultCal->setEnabled(false);
     defaultCalMenu->setEnabled(false);
 
@@ -270,7 +270,7 @@ VNA::VNA(AppWindow *window, QString name)
        if(window->getDevice()) {
            auto key = "DefaultCalibration"+window->getDevice()->getSerial();
            QSettings settings;
-           auto filename = QFileDialog::getOpenFileName(nullptr, "Load calibration data", settings.value(key).toString(), "Calibration files (*.cal)", nullptr, Preferences::QFileDialogOptions());
+           auto filename = QFileDialog::getOpenFileName(nullptr, tr("Load calibration data"), settings.value(key).toString(), tr("Calibration files (*.cal)"), nullptr, Preferences::QFileDialogOptions());
            if(!filename.isEmpty()) {
                settings.setValue(key, filename);
                removeDefaultCal->setEnabled(true);
@@ -624,15 +624,15 @@ VNA::VNA(AppWindow *window, QString name)
     window->addDockWidget(Qt::LeftDockWidgetArea, tracesDock);
     docks.insert(tracesDock);
 
-    auto importAction = new QAction("Touchstone/CSV");
+    auto importAction = new QAction(tr("Touchstone/CSV"));
     connect(importAction, &QAction::triggered, traceWidget, &TraceWidgetVNA::importDialog);
     importActions.push_back(importAction);
 
-    auto exportTouchstone = new QAction("Touchstone");
+    auto exportTouchstone = new QAction(tr("Touchstone"));
     connect(exportTouchstone, &QAction::triggered, traceWidget, &TraceWidgetVNA::exportTouchstone);
     exportActions.push_back(exportTouchstone);
 
-    auto exportCSV = new QAction("CSV");
+    auto exportCSV = new QAction(tr("CSV"));
     connect(exportCSV, &QAction::triggered, traceWidget, &TraceWidgetVNA::exportCSV);
     exportActions.push_back(exportCSV);
 

@@ -33,7 +33,9 @@ public:
     void setName(const QString &value);
     void updateGraphColors();
     static QString TypeToName(Type t);
+    static QString TypeToIdString(Type t);
     static Type TypeFromName(QString s);
+    static Type TypeFromIdString(QString s);
     virtual Type getType() = 0;
 
     virtual void resetSettings(){}

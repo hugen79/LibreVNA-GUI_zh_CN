@@ -65,13 +65,12 @@ void ModeWindow::SetupUi()
     auto createNew = [=](Mode::Type type) {
         bool ok;
         QString text = QInputDialog::getText(aw,
-                                            "Create new "+Mode::TypeToName(type)+" tab",
-                                            "Name:", QLineEdit::Normal,
+                                            tr("Create new %1 tab").arg(Mode::TypeToName(type)),
+                                            tr("Name:"), QLineEdit::Normal,
                                             Mode::TypeToName(type), &ok);
         if(ok) {
             if(!handler->nameAllowed(text)) {
-                InformationBox::ShowError("Name collision", "Unable to create tab, " \
-                                          "no duplicate names allowed");
+                InformationBox::ShowError(tr("Name collision"), tr("Unable to create tab, no duplicate names allowed"));
             } else {
                 auto index = handler->createMode(text, type);
                 handler->setCurrentIndex(index);
@@ -79,13 +78,13 @@ void ModeWindow::SetupUi()
         }
     };
 
-    menu = new QMenu("Mode");
+    menu = new QMenu(tr("Mode"));
     menu->setContextMenuPolicy(Qt::CustomContextMenu);
     connect(menu, &QMenu::customContextMenuRequested, this, [=](const QPoint &p) {
         auto action = menu->actionAt(p);
         if(menuActions.contains(action)) {
             QMenu contextMenu(tr("Context menu"), this);
-            QAction del("Delete", this);
+            QAction del(tr("Delete"), this);
             connect(&del, &QAction::triggered, this, [=](){
                 handler->closeMode(menuActions.indexOf(action));
             });
@@ -95,9 +94,9 @@ void ModeWindow::SetupUi()
     });
     modeMenuGroup = new QActionGroup(menu);
     menu->addSeparator();
-    auto submenuAdd = new QMenu("Create new");
+    auto submenuAdd = new QMenu(tr("Create new"));
     menu->addMenu(submenuAdd);
-    auto rename = new QAction("Rename active mode");
+    auto rename = new QAction(tr("Rename active mode"));
     connect(rename, &QAction::triggered, this, [=](){
         renameMode(handler->getCurrentIndex());
     });
@@ -192,7 +191,7 @@ void ModeWindow::CurrentModeChanged(int modeIndex)
 void ModeWindow::renameMode(int modeIndex)
 {
     auto mode = handler->getMode(modeIndex);
-    auto newName = QInputDialog::getText(this, "Rename", "Enter new name for mode \""+mode->getName()+"\":");
+    auto newName = QInputDialog::getText(this, tr("Rename"), tr("Enter new name for mode \"%1\":").arg(mode->getName()));
     if(newName.isEmpty()) {
         return;
     }
@@ -201,6 +200,6 @@ void ModeWindow::renameMode(int modeIndex)
         tabBar->setTabText(modeIndex, newName);
         menu->actions()[modeIndex]->setText(newName);
     } else {
-        InformationBox::ShowError("Error", "Unable to set name. Mode names must be unique.");
+        InformationBox::ShowError(tr("Error"), tr("Unable to set name. Mode names must be unique."));
     }
 }

@@ -123,15 +123,41 @@ void Mode::deactivate()
 QString Mode::TypeToName(Mode::Type t)
 {
     switch(t) {
-    case Type::VNA: return "Vector Network Analyzer";
-    case Type::SG: return "Signal Generator";
-    case Type::SA: return "Spectrum Analyzer";
+    case Type::VNA: return tr("Vector Network Analyzer");
+    case Type::SG: return tr("Signal Generator");
+    case Type::SA: return tr("Spectrum Analyzer");
+    default: return tr("Invalid");
+    }
+}
+
+QString Mode::TypeToIdString(Mode::Type t)
+{
+    switch(t) {
+    case Type::VNA: return "VNA";
+    case Type::SG: return "SG";
+    case Type::SA: return "SA";
     default: return "Invalid";
     }
 }
 
+Mode::Type Mode::TypeFromIdString(QString s)
+{
+    for(unsigned int i=0;i<(int)Type::Last;i++) {
+        if(s == TypeToIdString((Type) i)) {
+            return (Type) i;
+        }
+    }
+    return Type::Last;
+}
+
 Mode::Type Mode::TypeFromName(QString s)
 {
+    // First try the stable id (new saves), then fall back to the (possibly
+    // translated) display name for backwards compatibility with old setups.
+    auto t = TypeFromIdString(s);
+    if(t != Type::Last) {
+        return t;
+    }
     for(unsigned int i=0;i<(int)Type::Last;i++) {
         if(s == TypeToName((Type) i)) {
             return (Type) i;

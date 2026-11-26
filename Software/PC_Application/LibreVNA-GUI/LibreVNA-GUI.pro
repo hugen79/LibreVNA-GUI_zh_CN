@@ -345,6 +345,10 @@ mac{
 }
 
 QT += widgets network svg
+# ---- Chinese support ----
+TRANSLATIONS += \
+    translations/LibreVNA_zh_CN.ts
+
 
 FORMS += \
     Calibration/CalStandardLineEditDialog.ui \

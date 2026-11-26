@@ -1,4 +1,4 @@
-﻿#include "appwindow.h"
+#include "appwindow.h"
 
 #include "unit.h"
 #include "CustomWidgets/toggleswitch.h"
@@ -1125,7 +1125,7 @@ nlohmann::json AppWindow::SaveSetup()
     nlohmann::json jm;
     for(auto m : modeHandler->getModes()) {
         nlohmann::json jmode;
-        jmode["type"] = Mode::TypeToName(m->getType()).toStdString();
+        jmode["type"] = Mode::TypeToIdString(m->getType()).toStdString();
         jmode["name"] = m->getName().toStdString();
         jmode["settings"] = m->toJSON();
         jm.push_back(jmode);
