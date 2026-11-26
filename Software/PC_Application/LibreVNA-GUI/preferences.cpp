@@ -17,6 +17,26 @@
 
 using namespace std;
 
+// Assign stable (untranslated) identifiers to combo items whose displayed text
+// is translated, so stored values round-trip correctly across languages.
+static void assignComboIds(QComboBox *combo, const QStringList &ids)
+{
+    for (int i = 0; i < ids.size() && i < combo->count(); ++i) {
+        combo->setItemData(i, ids.at(i));
+    }
+}
+
+// Find a combo index matching `value` (English id stored as item data) or,
+// as a fallback for older settings, its already-translated display text.
+static int findComboIndex(QComboBox *combo, const QString &value)
+{
+    int idx = combo->findData(value);
+    if (idx < 0) {
+        idx = combo->findText(value);
+    }
+    return idx;
+}
+
 Preferences Preferences::instance;
 
 PreferencesDialog::PreferencesDialog(Preferences *pref, QWidget *parent) :
@@ -25,6 +45,10 @@ PreferencesDialog::PreferencesDialog(Preferences *pref, QWidget *parent) :
     p(pref)
 {
     ui->setupUi(this);
+
+    assignComboIds(ui->StartupSweepType, {"Frequency Sweep", "Power Sweep"});
+    assignComboIds(ui->GraphsDefaultTransmission, {"XY Plot", "Polar Chart", "Waterfall", "Eye Diagram"});
+    assignComboIds(ui->GraphsDefaultReflection, {"XY-Plot", "Smith Chart", "Polar Chart", "Waterfall"});
 
     auto setDefaultSettingsEnabled = [=](bool en) {
         ui->StartupSweepType->setEnabled(en);
@@ -254,7 +278,10 @@ void PreferencesDialog::setInitialGUIState()
     }
     ui->StartupAutosaveSetupFile->setChecked(p->Startup.AutosaveSetupFile);
     ui->StartupSetupFile->setText(p->Startup.SetupFile);
-    ui->StartupSweepType->setCurrentText(p->Startup.DefaultSweep.type);
+    int sweepTypeIdx = findComboIndex(ui->StartupSweepType, p->Startup.DefaultSweep.type);
+    if (sweepTypeIdx >= 0) {
+        ui->StartupSweepType->setCurrentIndex(sweepTypeIdx);
+    }
     ui->StartupSweepStart->setValueQuiet(p->Startup.DefaultSweep.f_start);
     ui->StartupSweepStop->setValueQuiet(p->Startup.DefaultSweep.f_stop);
     ui->StartupSweepLevel->setValue(p->Startup.DefaultSweep.f_excitation);
@@ -286,8 +313,14 @@ void PreferencesDialog::setInitialGUIState()
     ui->AcquisitionDFTLimitValue->setValue(p->Acquisition.maxDFTrate);
     ui->AcquisitionGroupDelaySamples->setValue(p->Acquisition.groupDelaySamples);
 
-    ui->GraphsDefaultTransmission->setCurrentText(p->Graphs.defaultGraphs.transmission);
-    ui->GraphsDefaultReflection->setCurrentText(p->Graphs.defaultGraphs.reflection);
+    int transIdx = findComboIndex(ui->GraphsDefaultTransmission, p->Graphs.defaultGraphs.transmission);
+    if (transIdx >= 0) {
+        ui->GraphsDefaultTransmission->setCurrentIndex(transIdx);
+    }
+    int reflIdx = findComboIndex(ui->GraphsDefaultReflection, p->Graphs.defaultGraphs.reflection);
+    if (reflIdx >= 0) {
+        ui->GraphsDefaultReflection->setCurrentIndex(reflIdx);
+    }
     ui->GraphsShowUnit->setChecked(p->Graphs.showUnits);
     ui->GraphsColorBackground->setColor(p->Graphs.Color.background);
     ui->GraphsColorAxis->setColor(p->Graphs.Color.axis);
@@ -378,7 +411,7 @@ void PreferencesDialog::updateFromGUI()
     p->Startup.UseSetupFile = ui->StartupUseSetupFile->isChecked();
     p->Startup.SetupFile = ui->StartupSetupFile->text();
     p->Startup.AutosaveSetupFile = ui->StartupAutosaveSetupFile->isChecked();
-    p->Startup.DefaultSweep.type = ui->StartupSweepType->currentText();
+    p->Startup.DefaultSweep.type = ui->StartupSweepType->currentData().toString();
     p->Startup.DefaultSweep.f_start = ui->StartupSweepStart->value();
     p->Startup.DefaultSweep.f_stop = ui->StartupSweepStop->value();
     p->Startup.DefaultSweep.f_excitation = ui->StartupSweepLevel->value();
@@ -409,8 +442,8 @@ void PreferencesDialog::updateFromGUI()
     p->Acquisition.maxDFTrate = ui->AcquisitionDFTLimitValue->value();
     p->Acquisition.groupDelaySamples = ui->AcquisitionGroupDelaySamples->value();
 
-    p->Graphs.defaultGraphs.transmission = ui->GraphsDefaultTransmission->currentText();
-    p->Graphs.defaultGraphs.reflection = ui->GraphsDefaultReflection->currentText();
+    p->Graphs.defaultGraphs.transmission = ui->GraphsDefaultTransmission->currentData().toString();
+    p->Graphs.defaultGraphs.reflection = ui->GraphsDefaultReflection->currentData().toString();
     p->Graphs.showUnits = ui->GraphsShowUnit->isChecked();
     p->Graphs.Color.background = ui->GraphsColorBackground->getColor();
     p->Graphs.Color.axis = ui->GraphsColorAxis->getColor();
