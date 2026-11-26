@@ -47,6 +47,36 @@ cd $UNPACKED_ZIP_FOLDER$
 * Start LibreVNA-GUI.app and add a security exception to allow the Mac to run the app with an "untrusted" signing key.
 * Launch app again.
 
+## Simplified Chinese Interface (简体中文界面)
+
+This fork adds full Simplified Chinese (zh_CN) localization to LibreVNA-GUI.
+
+**What was changed:**
+* `main.cpp` loads the application translation (`LibreVNA_zh_CN.qm`) and Qt's base translation (`qtbase_zh_CN.qm`) at startup. The language follows the system locale by default and can be overridden with `--lang zh_CN`.
+* `LibreVNA-GUI.pro` declares `TRANSLATIONS`, and `translations/LibreVNA_zh_CN.ts` provides the complete Chinese translation (1146 strings).
+* Previously hardcoded menu strings (`Mode`, `Calibration`, `De-embedding`, `Tools`, ...) were wrapped in `tr()` so they can be translated.
+* `Mode::TypeToName()` now uses `tr()`; new `TypeToIdString()`/`TypeFromIdString()` keep setup-file serialization stable across languages.
+
+**Run in Chinese:**
+```console
+LibreVNA-GUI.exe --lang zh_CN
+```
+
+---
+
+本 fork 为 LibreVNA-GUI 增加了完整的简体中文（zh_CN）本地化。
+
+**修改内容：**
+* `main.cpp` 启动时加载应用翻译（`LibreVNA_zh_CN.qm`）与 Qt 基础翻译（`qtbase_zh_CN.qm`）。默认跟随系统区域语言，也可通过命令行 `--lang zh_CN` 覆盖。
+* `LibreVNA-GUI.pro` 声明了 `TRANSLATIONS`，`translations/LibreVNA_zh_CN.ts` 提供完整的中文翻译（共 1146 条字符串）。
+* 将原先硬编码的菜单字符串（`Mode`、`Calibration`、`De-embedding`、`Tools` 等）用 `tr()` 包裹，使其可被翻译。
+* `Mode::TypeToName()` 改用 `tr()`；新增 `TypeToIdString()`/`TypeFromIdString()` 保证设置文件的序列化在不同语言间保持稳定。
+
+**以中文运行：**
+```console
+LibreVNA-GUI.exe --lang zh_CN
+```
+
 ## Quick Start
 * You can find released versions of the GUI application and the device firmware [here](https://github.com/jankae/LibreVNA/releases).
 * If you would like to try out the newest features, the compiled versions of each commit can be found [here](https://github.com/jankae/LibreVNA/actions) (but keep in mind that some features might be unstable or incomplete). If you are having trouble downloading them, please refer to this [guide](Documentation/DeveloperInfo/DownloadActionBuilds.md).
