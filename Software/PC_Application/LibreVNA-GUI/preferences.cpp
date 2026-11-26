@@ -156,7 +156,7 @@ PreferencesDialog::PreferencesDialog(Preferences *pref, QWidget *parent) :
     ui->DebugMaxUSBlogSize->setPrefixes(" kMG");
 
     // Add device driver settings
-    QTreeWidgetItem *item = ui->treeWidget->findItems("Device Drivers", Qt::MatchExactly)[0];
+    QTreeWidgetItem *item = ui->treeWidget->findItems(tr("Device Drivers"), Qt::MatchExactly)[0];
     for(auto driver : DeviceDriver::getDrivers()) {
         auto w = driver->createSettingsWidget();
         if(!w) {
