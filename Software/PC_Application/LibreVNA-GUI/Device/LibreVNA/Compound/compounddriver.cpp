@@ -20,7 +20,7 @@ CompoundDriver::CompoundDriver()
     drivers.push_back(new LibreVNAUSBDriver);
     drivers.push_back(new LibreVNATCPDriver);
 
-    auto log = new QAction("View Packet Log");
+    auto log = new QAction(tr("View Packet Log"));
     connect(log, &QAction::triggered, this, [=](){
        auto d = new DevicePacketLogView();
        d->show();

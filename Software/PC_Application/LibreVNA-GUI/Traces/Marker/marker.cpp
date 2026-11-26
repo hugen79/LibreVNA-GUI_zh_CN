@@ -925,7 +925,7 @@ void Marker::updateContextmenu()
 
     if(!parent) {
         // type can only be changed for top level markers
-        auto typemenu = contextmenu.addMenu("Type");
+        auto typemenu = contextmenu.addMenu(tr("Type"));
         auto typegroup = new QActionGroup(&contextmenu);
         for(auto t : getSupportedTypes()) {
             auto setTypeAction = new QAction(typeToString(t), typemenu);
@@ -941,7 +941,7 @@ void Marker::updateContextmenu()
         }
     }
 
-    auto table = contextmenu.addMenu("Data Format in Table");
+    auto table = contextmenu.addMenu(tr("Data Format in Table"));
     auto tablegroup = new QActionGroup(&contextmenu);
     for(auto f : applicableFormats()) {
         auto setFormatAction = new QAction(formatToString(f), table);
@@ -956,7 +956,7 @@ void Marker::updateContextmenu()
         table->addAction(setFormatAction);
     }
 
-    auto graph = contextmenu.addMenu("Show on Graph");
+    auto graph = contextmenu.addMenu(tr("Show on Graph"));
     for(auto f : applicableFormats()) {
         auto setFormatAction = new QAction(formatToString(f), graph);
         setFormatAction->setCheckable(true);
@@ -988,7 +988,7 @@ void Marker::updateContextmenu()
         bool needsSeparator = false;
         if((applicableGroups.size() > 0 && group == nullptr) || applicableGroups.size() > 1) {
             // there are other groups available than the one the marker might already be assigned to
-            auto addGroupMenu = new QMenu("Add to linked group");
+            auto addGroupMenu = new QMenu(tr("Add to linked group"));
             auto groupGroup = new QActionGroup(addGroupMenu);
             for(auto g : model->getGroups()) {
                 auto addGroupAction = new QAction(QString::number(g->getNumber()));
@@ -1010,7 +1010,7 @@ void Marker::updateContextmenu()
         }
         if(group != nullptr) {
             // "remove from group" available
-            auto removeGroup = new QAction("Remove from linked group", &contextmenu);
+            auto removeGroup = new QAction(tr("Remove from linked group"), &contextmenu);
             connect(removeGroup, &QAction::triggered, [=](){
                 group->remove(this);
             });
@@ -1022,7 +1022,7 @@ void Marker::updateContextmenu()
         }
 
 
-        auto deleteAction = new QAction("Delete", &contextmenu);
+        auto deleteAction = new QAction(tr("Delete"), &contextmenu);
         connect(deleteAction, &QAction::triggered, this, &Marker::deleteLater);
         contextmenu.addAction(deleteAction);
     }
@@ -1534,7 +1534,7 @@ QWidget *Marker::getTypeEditor(QAbstractItemDelegate *delegate)
         c->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
         layout->setContentsMargins(0,0,0,0);
         layout->setSpacing(0);
-        layout->addWidget(new QLabel("to"));
+        layout->addWidget(new QLabel(tr("to")));
         auto deltaChooser = new QComboBox;
         for(auto m : model->getMarkers()) {
             if(canUseAsDelta(m)) {
@@ -1684,7 +1684,7 @@ QWidget *Marker::getRestrictEditor()
     min->setPrecision(5);
     min->setValue(minPosition);
     min->setEnabled(restrictPosition);
-    layout->addWidget(new QLabel("from"));
+    layout->addWidget(new QLabel(tr("from")));
     layout->addWidget(min);
     auto max = new SIUnitEdit;
     max->setPrefixes("pnum kMG");
@@ -1692,7 +1692,7 @@ QWidget *Marker::getRestrictEditor()
     max->setPrecision(5);
     max->setValue(maxPosition);
     max->setEnabled(restrictPosition);
-    layout->addWidget(new QLabel("to"));
+    layout->addWidget(new QLabel(tr("to")));
     layout->addWidget(max);
 
     connect(cb, &QCheckBox::toggled, this, [=](){

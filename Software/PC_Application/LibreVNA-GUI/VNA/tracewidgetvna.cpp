@@ -13,8 +13,8 @@ TraceWidgetVNA::TraceWidgetVNA(TraceModel &model, Calibration *cal, Deembedding 
     : TraceWidget(model, cal, deembed, parent)
 {
     auto exportMenu = new QMenu();
-    auto exportTouchstoneAction = new QAction("Touchstone");
-    auto exportCSVAction = new QAction("CSV");
+    auto exportTouchstoneAction = new QAction(tr("Touchstone"));
+    auto exportCSVAction = new QAction(tr("CSV"));
     exportMenu->addAction(exportTouchstoneAction);
     exportMenu->addAction(exportCSVAction);
 

@@ -61,7 +61,7 @@ MarkerWidget::MarkerWidget(MarkerModel &model, QWidget *parent) :
             }
             // multiple markers selected, execute group context menu
             QMenu menu;
-            auto createGroup = new QAction("Link selected", &menu);
+            auto createGroup = new QAction(tr("Link selected"), &menu);
             connect(createGroup, &QAction::triggered, [&](){
                 auto g = model.createMarkerGroup();
                 // assign markers to group
@@ -71,7 +71,7 @@ MarkerWidget::MarkerWidget(MarkerModel &model, QWidget *parent) :
             });
             menu.addAction(createGroup);
             if(anyInGroup) {
-                auto removeGroup = new QAction("Break Links", &menu);
+                auto removeGroup = new QAction(tr("Break Links"), &menu);
                 connect(removeGroup, &QAction::triggered, [&](){
                     // remove selected markers from  groups if they are already assigned to one
                     for(auto m : selected) {

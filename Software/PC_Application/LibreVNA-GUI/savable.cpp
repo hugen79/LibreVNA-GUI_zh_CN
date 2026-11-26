@@ -3,6 +3,7 @@
 #include "preferences.h"
 
 #include <QFileDialog>
+#include <QCoreApplication>
 #include <fstream>
 #include <iomanip>
 
@@ -25,7 +26,8 @@ bool Savable::openFromFileDialog(QString title, QString filetype)
     try {
         file >> j;
     } catch (exception &e) {
-        InformationBox::ShowError("Error", "Failed to parse the setup file (" + QString(e.what()) + ")");
+        InformationBox::ShowError(QCoreApplication::translate("Savable", "Error"),
+                                  QCoreApplication::translate("Savable", "Failed to parse the setup file (%1)").arg(QString(e.what())));
         qWarning() << "Parsing of setup file failed: " << e.what();
         file.close();
         return false;

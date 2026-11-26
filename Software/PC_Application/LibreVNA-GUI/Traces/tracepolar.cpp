@@ -259,18 +259,18 @@ bool TracePolar::markerVisible(double x)
 void TracePolar::updateContextMenu()
 {
     contextmenu->clear();
-    auto setup = new QAction("Setup...", contextmenu);
+    auto setup = new QAction(tr("Setup..."), contextmenu);
     connect(setup, &QAction::triggered, this, &TracePolar::axisSetupDialog, Qt::UniqueConnection);
     contextmenu->addAction(setup);
 
     contextmenu->addSeparator();
-    auto image = new QAction("Save image...", contextmenu);
+    auto image = new QAction(tr("Save image..."), contextmenu);
     contextmenu->addAction(image);
     connect(image, &QAction::triggered, [=]() {
         SaveScreenshot(this);
     });
 
-    auto createMarker = contextmenu->addAction("Add marker here");
+    auto createMarker = contextmenu->addAction(tr("Add marker here"));
     bool activeTraces = false;
     for(auto t : traces) {
         if(t.second) {

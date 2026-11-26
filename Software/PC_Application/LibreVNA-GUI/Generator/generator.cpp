@@ -40,7 +40,7 @@ void Generator::deactivate()
 void Generator::initializeDevice()
 {
     if(!window->getDevice()->supports(DeviceDriver::Feature::Generator)) {
-        InformationBox::ShowError("Unsupported", "The connected device does not support generator mode");
+        InformationBox::ShowError(tr("Unsupported"), tr("The connected device does not support generator mode"));
         return;
     }
     updateDevice();

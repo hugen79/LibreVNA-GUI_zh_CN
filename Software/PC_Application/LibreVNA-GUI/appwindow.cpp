@@ -390,7 +390,7 @@ bool AppWindow::ConnectToDevice(QString serial, DeviceDriver *driver)
         }
         if(!device) {
             // failed to connect
-            InformationBox::ShowError("Failed to connect", "Could not connect to "+serial);
+            InformationBox::ShowError(tr("Failed to connect"), tr("Could not connect to %1").arg(serial));
             return false;
         }
         UpdateStatusBar(AppWindow::DeviceStatusBar::Connected);
@@ -494,7 +494,7 @@ void AppWindow::DisconnectDevice()
 void AppWindow::DeviceConnectionLost()
 {
     DisconnectDevice();
-    InformationBox::ShowError("Disconnected", "The connection to the device has been lost");
+    InformationBox::ShowError(tr("Disconnected"), tr("The connection to the device has been lost"));
     UpdateDeviceList();
 }
 
@@ -502,11 +502,11 @@ void AppWindow::CreateToolbars()
 {
     // Reference toolbar
     auto tb_reference = new QToolBar("Reference", this);
-    tb_reference->addWidget(new QLabel("Ref in:"));
+    tb_reference->addWidget(new QLabel(tr("Ref in:")));
     toolbars.reference.type = new QComboBox();
     tb_reference->addWidget(toolbars.reference.type);
     tb_reference->addSeparator();
-    tb_reference->addWidget(new QLabel("Ref out:"));
+    tb_reference->addWidget(new QLabel(tr("Ref out:")));
     toolbars.reference.outFreq = new QComboBox();
     tb_reference->addWidget(toolbars.reference.outFreq);
     connect(toolbars.reference.type, qOverload<int>(&QComboBox::currentIndexChanged), this, &AppWindow::ReferenceChanged);
@@ -1155,7 +1155,7 @@ bool AppWindow::LoadSetup(QString filename)
     try {
         file >> j;
     } catch (exception &e) {
-        InformationBox::ShowError("Error", "Failed to parse the setup file (" + QString(e.what()) + ")");
+        InformationBox::ShowError(tr("Error"), tr("Failed to parse the setup file (%1)").arg(QString(e.what())));
         qWarning() << "Parsing of setup file failed: " << e.what();
         file.close();
         return false;

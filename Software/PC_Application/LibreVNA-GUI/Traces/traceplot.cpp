@@ -395,7 +395,7 @@ void TracePlot::paintEvent(QPaintEvent *event)
 void TracePlot::finishContextMenu()
 {
     contextmenu->addSeparator();
-    auto setTitle = new QAction("Set Title", contextmenu);
+    auto setTitle = new QAction(tr("Set Title"), contextmenu);
     contextmenu->addAction(setTitle);
     connect(setTitle, &QAction::triggered, [=](){
         title = QInputDialog::getText(contextmenu, "Set new graph title", "Enter new title:", QLineEdit::Normal, title);
@@ -403,26 +403,26 @@ void TracePlot::finishContextMenu()
     contextmenu->addSeparator();
 
     if(parentTile) {
-        auto add = new QMenu("Add tile...", contextmenu);
-        auto left = new QAction("to the left", contextmenu);
+        auto add = new QMenu(tr("Add tile..."), contextmenu);
+        auto left = new QAction(tr("to the left"), contextmenu);
         connect(left, &QAction::triggered, [=](){
             // split, keep current graph on the right
             parentTile->splitHorizontally(true);
         });
         add->addAction(left);
-        auto right = new QAction("to the right", contextmenu);
+        auto right = new QAction(tr("to the right"), contextmenu);
         connect(right, &QAction::triggered, [=](){
             // split, keep current graph on the left
             parentTile->splitHorizontally(false);
         });
         add->addAction(right);
-        auto above = new QAction("above", contextmenu);
+        auto above = new QAction(tr("above"), contextmenu);
         connect(above, &QAction::triggered, [=](){
             // split, keep current graph on the bottom
             parentTile->splitVertically(true);
         });
         add->addAction(above);
-        auto below = new QAction("below", contextmenu);
+        auto below = new QAction(tr("below"), contextmenu);
         connect(below, &QAction::triggered, [=](){
             // split, keep current graph on the top
             parentTile->splitVertically(false);
@@ -431,7 +431,7 @@ void TracePlot::finishContextMenu()
         contextmenu->addMenu(add);
     }
 
-    auto removeTile = new QAction("Remove Tile", contextmenu);
+    auto removeTile = new QAction(tr("Remove Tile"), contextmenu);
     contextmenu->addAction(removeTile);
     connect(removeTile, &QAction::triggered, [=]() {
         markedForDeletion = true;
@@ -443,7 +443,7 @@ void TracePlot::finishContextMenu()
         });
     });
 
-    auto close = new QAction("Close", contextmenu);
+    auto close = new QAction(tr("Close"), contextmenu);
     contextmenu->addAction(close);
     connect(close, &QAction::triggered, [=]() {
         markedForDeletion = true;

@@ -201,7 +201,7 @@ void TraceSmithChart::updateContextMenu()
 {
     TracePolar::updateContextMenu();
     // insert the mouse text format selection
-    auto formatMenu = new QMenu("Cursor format", contextmenu);
+    auto formatMenu = new QMenu(tr("Cursor format"), contextmenu);
     auto group = new QActionGroup(contextmenu);
     for(auto f : applicableMouseTextFormats()) {
         auto action = new QAction(Marker::formatToString(f));

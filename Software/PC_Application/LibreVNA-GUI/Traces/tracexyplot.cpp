@@ -343,18 +343,18 @@ bool TraceXYPlot::configureForTrace(Trace *t)
 void TraceXYPlot::updateContextMenu()
 {
     contextmenu->clear();
-    auto setup = new QAction("Axis setup...", contextmenu);
+    auto setup = new QAction(tr("Axis setup..."), contextmenu);
     connect(setup, &QAction::triggered, this, &TraceXYPlot::axisSetupDialog);
     contextmenu->addAction(setup);
 
     contextmenu->addSeparator();
-    auto image = new QAction("Save image...", contextmenu);
+    auto image = new QAction(tr("Save image..."), contextmenu);
     contextmenu->addAction(image);
     connect(image, &QAction::triggered, [=]() {
         SaveScreenshot(this);
     });
 
-    auto createMarker = contextmenu->addAction("Add marker here");
+    auto createMarker = contextmenu->addAction(tr("Add marker here"));
     bool activeTraces = false;
     for(auto t : traces) {
         if(t.second) {

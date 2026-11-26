@@ -155,11 +155,11 @@ LibreVNADriver::LibreVNADriver()
         }
     };
 
-    auto manual = new QAction("Manual Control");
+    auto manual = new QAction(tr("Manual Control"));
     connect(manual, &QAction::triggered, this, startManualControl);
     specificActions.push_back(manual);
 
-    auto config = new QAction("Configuration");
+    auto config = new QAction(tr("Configuration"));
     connect(config, &QAction::triggered, this, [=](){
         QDialog *d = nullptr;
         switch(hardwareVersion) {
@@ -182,7 +182,7 @@ LibreVNADriver::LibreVNADriver()
     });
     specificActions.push_back(config);
 
-    auto update = new QAction("Firmware Update");
+    auto update = new QAction(tr("Firmware Update"));
     connect(update, &QAction::triggered, this, [=](){
        auto d = new FirmwareUpdateDialog(this);
        d->show();
@@ -193,28 +193,28 @@ LibreVNADriver::LibreVNADriver()
     sep->setSeparator(true);
     specificActions.push_back(sep);
 
-    auto srccal = new QAction("Source Calibration");
+    auto srccal = new QAction(tr("Source Calibration"));
     connect(srccal, &QAction::triggered, this, [=](){
        auto d = new SourceCalDialog(this);
        d->show();
     });
     specificActions.push_back(srccal);
 
-    auto recvcal = new QAction("Receiver Calibration");
+    auto recvcal = new QAction(tr("Receiver Calibration"));
     connect(recvcal, &QAction::triggered, this, [=](){
        auto d = new ReceiverCalDialog(this);
        d->show();
     });
     specificActions.push_back(recvcal);
 
-    auto freqcal = new QAction("Frequency Calibration");
+    auto freqcal = new QAction(tr("Frequency Calibration"));
     connect(freqcal, &QAction::triggered, this, [=](){
        auto d = new FrequencyCalDialog(this);
        d->show();
     });
     specificActions.push_back(freqcal);
 
-    auto internalAlignment = new QAction("Run Internal Alignment");
+    auto internalAlignment = new QAction(tr("Run Internal Alignment"));
     connect(internalAlignment, &QAction::triggered, this, [=](){
         emit acquireControl();
         Protocol::PacketInfo p = {};
@@ -224,7 +224,7 @@ LibreVNADriver::LibreVNADriver()
             if(res == TransmissionResult::Ack) {
                 InformationBox::ShowMessage("Success", "Internal alignment completed");
             } else {
-                InformationBox::ShowError("Error", "Running internal alignment failed");
+                InformationBox::ShowError(tr("Error"), tr("Running internal alignment failed"));
             }
             emit releaseControl();
         }, 5000);
@@ -235,7 +235,7 @@ LibreVNADriver::LibreVNADriver()
     sep2->setSeparator(true);
     specificActions.push_back(sep2);
 
-    auto log = new QAction("View Packet Log");
+    auto log = new QAction(tr("View Packet Log"));
     connect(log, &QAction::triggered, this, [=](){
        auto d = new DevicePacketLogView();
        d->show();

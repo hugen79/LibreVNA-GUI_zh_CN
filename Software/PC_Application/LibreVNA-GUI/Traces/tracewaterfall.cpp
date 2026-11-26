@@ -206,12 +206,12 @@ bool TraceWaterfall::domainMatch(Trace *t)
 void TraceWaterfall::updateContextMenu()
 {
     contextmenu->clear();
-    auto setup = new QAction("Setup...", contextmenu);
+    auto setup = new QAction(tr("Setup..."), contextmenu);
     connect(setup, &QAction::triggered, this, &TraceWaterfall::axisSetupDialog);
     contextmenu->addAction(setup);
 
     contextmenu->addSeparator();
-    auto image = new QAction("Save image...", contextmenu);
+    auto image = new QAction(tr("Save image..."), contextmenu);
     contextmenu->addAction(image);
     connect(image, &QAction::triggered, [=]() {
         SaveScreenshot(this);

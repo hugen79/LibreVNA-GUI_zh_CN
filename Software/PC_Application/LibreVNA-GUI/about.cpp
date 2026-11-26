@@ -14,7 +14,7 @@ AboutDialog::AboutDialog(QWidget *parent) :
 {
     ui->setupUi(this);
     setWindowTitle("About " + qlibrevnaApp->applicationName());
-    ui->appVersionClipboard->setText("To Clipboard");
+    ui->appVersionClipboard->setText(tr("To Clipboard"));
     ui->appName->setText(qlibrevnaApp->applicationName());
     ui->appVersion->setText(QString("Version: %1")
         .arg(qlibrevnaApp->applicationVersion()));

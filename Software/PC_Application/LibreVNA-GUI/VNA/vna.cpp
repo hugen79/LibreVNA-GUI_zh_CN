@@ -100,7 +100,7 @@ VNA::VNA(AppWindow *window, QString name)
     connect(calLoad, &QAction::triggered, [=](){
         LoadCalibration();
         if(cal.getCaltype().type != Calibration::Type::None) {
-            if(InformationBox::AskQuestion("Adjust span?", "Do you want to adjust the span to match the loaded calibration file?", false)) {
+            if(InformationBox::AskQuestion(tr("Adjust span?"), tr("Do you want to adjust the span to match the loaded calibration file?"), false)) {
                 SpanMatchCal();
             }
         }
@@ -175,7 +175,7 @@ VNA::VNA(AppWindow *window, QString name)
 
     calDialog = new QProgressDialog();
     calDialog->setCancelButtonText("Abort");
-    calDialog->setWindowTitle("Taking calibration measurement...");
+    calDialog->setWindowTitle(tr("Taking calibration measurement..."));
     calDialog->setValue(0);
     calDialog->setWindowModality(Qt::ApplicationModal);
     calDialog->reset();
@@ -323,10 +323,10 @@ VNA::VNA(AppWindow *window, QString name)
     connect(this, &VNA::singleSweepChanged, bSingle, &QPushButton::setChecked);
     tb_sweep->addWidget(bSingle);
 
-    tb_sweep->addWidget(new QLabel("Sweep type:"));
+    tb_sweep->addWidget(new QLabel(tr("Sweep type:")));
     cbSweepType = new QComboBox();
-    cbSweepType->addItem("Frequency");
-    cbSweepType->addItem("Power");
+    cbSweepType->addItem(tr("Frequency"));
+    cbSweepType->addItem(tr("Power"));
     tb_sweep->addWidget(cbSweepType);
 
     auto eStart = new SIUnitEdit("Hz", " kMG", 6);
@@ -334,7 +334,7 @@ VNA::VNA(AppWindow *window, QString name)
     eStart->setToolTip("Start frequency");
     connect(eStart, &SIUnitEdit::valueChanged, this, &VNA::SetStartFreq);
     connect(this, &VNA::startFreqChanged, eStart, &SIUnitEdit::setValueQuiet);
-    frequencySweepActions.push_back(tb_sweep->addWidget(new QLabel("Start:")));
+    frequencySweepActions.push_back(tb_sweep->addWidget(new QLabel(tr("Start:"))));
     frequencySweepActions.push_back(tb_sweep->addWidget(eStart));
 
     auto eCenter = new SIUnitEdit("Hz", " kMG", 6);
@@ -342,7 +342,7 @@ VNA::VNA(AppWindow *window, QString name)
     eCenter->setToolTip("Center frequency");
     connect(eCenter, &SIUnitEdit::valueChanged, this, &VNA::SetCenterFreq);
     connect(this, &VNA::centerFreqChanged, eCenter, &SIUnitEdit::setValueQuiet);
-    frequencySweepActions.push_back(tb_sweep->addWidget(new QLabel("Center:")));
+    frequencySweepActions.push_back(tb_sweep->addWidget(new QLabel(tr("Center:"))));
     frequencySweepActions.push_back(tb_sweep->addWidget(eCenter));
 
     auto eStop = new SIUnitEdit("Hz", " kMG", 6);
@@ -350,7 +350,7 @@ VNA::VNA(AppWindow *window, QString name)
     eStop->setToolTip("Stop frequency");
     connect(eStop, &SIUnitEdit::valueChanged, this, &VNA::SetStopFreq);
     connect(this, &VNA::stopFreqChanged, eStop, &SIUnitEdit::setValueQuiet);
-    frequencySweepActions.push_back(tb_sweep->addWidget(new QLabel("Stop:")));
+    frequencySweepActions.push_back(tb_sweep->addWidget(new QLabel(tr("Stop:"))));
     frequencySweepActions.push_back(tb_sweep->addWidget(eStop));
 
     auto eSpan = new SIUnitEdit("Hz", " kMG", 6);
@@ -358,7 +358,7 @@ VNA::VNA(AppWindow *window, QString name)
     eSpan->setToolTip("Span");
     connect(eSpan, &SIUnitEdit::valueChanged, this, &VNA::SetSpan);
     connect(this, &VNA::spanChanged, eSpan, &SIUnitEdit::setValueQuiet);
-    frequencySweepActions.push_back(tb_sweep->addWidget(new QLabel("Span:")));
+    frequencySweepActions.push_back(tb_sweep->addWidget(new QLabel(tr("Span:"))));
     frequencySweepActions.push_back(tb_sweep->addWidget(eSpan));
 
     auto bFull = new QPushButton(QIcon::fromTheme("zoom-fit-best", QIcon(":/icons/zoom-fit.png")), "");
@@ -407,7 +407,7 @@ VNA::VNA(AppWindow *window, QString name)
     sbPowerLow->setKeyboardTracking(false);
     connect(sbPowerLow, qOverload<double>(&QDoubleSpinBox::valueChanged), this, &VNA::SetStartPower);
     connect(this, &VNA::startPowerChanged, sbPowerLow, &QDoubleSpinBox::setValue);
-    powerSweepActions.push_back(tb_sweep->addWidget(new QLabel("From:")));
+    powerSweepActions.push_back(tb_sweep->addWidget(new QLabel(tr("From:"))));
     powerSweepActions.push_back(tb_sweep->addWidget(sbPowerLow));
 
     auto sbPowerHigh = new QDoubleSpinBox();
@@ -419,7 +419,7 @@ VNA::VNA(AppWindow *window, QString name)
     sbPowerHigh->setKeyboardTracking(false);
     connect(sbPowerHigh, qOverload<double>(&QDoubleSpinBox::valueChanged), this, &VNA::SetStopPower);
     connect(this, &VNA::stopPowerChanged, sbPowerHigh, &QDoubleSpinBox::setValue);
-    powerSweepActions.push_back(tb_sweep->addWidget(new QLabel("To:")));
+    powerSweepActions.push_back(tb_sweep->addWidget(new QLabel(tr("To:"))));
     powerSweepActions.push_back(tb_sweep->addWidget(sbPowerHigh));
 
     auto ePowerFreq = new SIUnitEdit("Hz", " kMG", 6);
@@ -427,7 +427,7 @@ VNA::VNA(AppWindow *window, QString name)
     ePowerFreq->setToolTip("Start frequency");
     connect(ePowerFreq, &SIUnitEdit::valueChanged, this, &VNA::SetPowerSweepFrequency);
     connect(this, &VNA::powerSweepFrequencyChanged, ePowerFreq, &SIUnitEdit::setValueQuiet);
-    powerSweepActions.push_back(tb_sweep->addWidget(new QLabel("at:")));
+    powerSweepActions.push_back(tb_sweep->addWidget(new QLabel(tr("at:"))));
     powerSweepActions.push_back(tb_sweep->addWidget(ePowerFreq));
 
     window->addToolBar(tb_sweep);
@@ -444,7 +444,7 @@ VNA::VNA(AppWindow *window, QString name)
     dbm->setKeyboardTracking(false);
     connect(dbm, qOverload<double>(&QDoubleSpinBox::valueChanged), this, &VNA::SetSourceLevel);
     connect(this, &VNA::sourceLevelChanged, dbm, &QDoubleSpinBox::setValue);
-    frequencySweepActions.push_back(tb_acq->addWidget(new QLabel("Level:")));
+    frequencySweepActions.push_back(tb_acq->addWidget(new QLabel(tr("Level:"))));
     frequencySweepActions.push_back(tb_acq->addWidget(dbm));
 
     auto points = new QSpinBox();
@@ -459,7 +459,7 @@ VNA::VNA(AppWindow *window, QString name)
         points->setValue(p);
         points->blockSignals(false);
     });
-    tb_acq->addWidget(new QLabel("Points:"));
+    tb_acq->addWidget(new QLabel(tr("Points:")));
     tb_acq->addWidget(points);
 
     auto eBandwidth = new SIUnitEdit("Hz", " kM", 3);
@@ -467,17 +467,17 @@ VNA::VNA(AppWindow *window, QString name)
     eBandwidth->setToolTip("IF bandwidth");
     connect(eBandwidth, &SIUnitEdit::valueChanged, this, &VNA::SetIFBandwidth);
     connect(this, &VNA::IFBandwidthChanged, eBandwidth, &SIUnitEdit::setValueQuiet);
-    tb_acq->addWidget(new QLabel("IF BW:"));
+    tb_acq->addWidget(new QLabel(tr("IF BW:")));
     tb_acq->addWidget(eBandwidth);
 
-    tb_acq->addWidget(new QLabel("Dwell time:"));
+    tb_acq->addWidget(new QLabel(tr("Dwell time:")));
     acquisitionDwellTime = new SIUnitEdit("s", "um ", 3);
     acquisitionDwellTime->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Fixed);
     connect(acquisitionDwellTime, &SIUnitEdit::valueChanged, this, &VNA::SetDwellTime);
     connect(this, &VNA::dwellTimeChanged, acquisitionDwellTime, &SIUnitEdit::setValueQuiet);
     tb_acq->addWidget(acquisitionDwellTime);
 
-    tb_acq->addWidget(new QLabel("Averaging:"));
+    tb_acq->addWidget(new QLabel(tr("Averaging:")));
     lAverages = new QLabel("0/");
     tb_acq->addWidget(lAverages);
     auto sbAverages = new QSpinBox;
@@ -498,7 +498,7 @@ VNA::VNA(AppWindow *window, QString name)
 
     // Calibration toolbar (and populate calibration menu)
     auto tb_cal = new QToolBar("Calibration");
-    calLabel = new QLabel("Calibration:");
+    calLabel = new QLabel(tr("Calibration:"));
     UpdateCalWidget();
     tb_cal->addWidget(calLabel);
     auto cbEnableCal = new QCheckBox;
@@ -781,7 +781,7 @@ static void SetComboBoxItemEnabled(QComboBox * comboBox, int index, bool enabled
 void VNA::initializeDevice()
 {
     if(!window->getDevice()->supports(DeviceDriver::Feature::VNA)) {
-        InformationBox::ShowError("Unsupported", "The connected device does not support VNA mode");
+        InformationBox::ShowError(tr("Unsupported"), tr("The connected device does not support VNA mode"));
         return;
     }
     cbLogSweep->setEnabled(window->getDevice()->supports(DeviceDriver::Feature::VNALogSweep));
@@ -845,7 +845,7 @@ void VNA::deviceDisconnected()
 void VNA::shutdown()
 {
     if(cal.hasUnsavedChanges() && cal.getCaltype().type != Calibration::Type::None) {
-        auto save = InformationBox::AskQuestion("Save calibration?", "The calibration contains data that has not been saved yet. Do you want to save it before exiting?", false);
+        auto save = InformationBox::AskQuestion(tr("Save calibration?"), tr("The calibration contains data that has not been saved yet. Do you want to save it before exiting?"), false);
         if(save) {
             SaveCalibration();
         }
@@ -1404,7 +1404,7 @@ void VNA::ApplyCalibration(Calibration::CalType type)
         try {
             cal.compute(type);
         } catch (runtime_error &e) {
-            InformationBox::ShowError("Calibration failure", e.what());
+            InformationBox::ShowError(tr("Calibration failure"), e.what());
             DisableCalibration();
         }
     } else {

@@ -315,7 +315,7 @@ bool TraceWidget::importFile(QString filename)
         });
         return true;
     } catch(const std::exception& e) {
-        InformationBox::ShowError("Failed to import file", QString("Attempt to import file ended with error: \"") + e.what()+"\"");
+        InformationBox::ShowError(tr("Failed to import file"), tr("Attempt to import file ended with error: \"%1\"").arg(e.what()));
         return false;
     }
 }
@@ -642,10 +642,10 @@ void TraceWidget::contextMenuEvent(QContextMenuEvent *event)
     }
     auto trace = model.trace(index.row());
     auto ctxmenu = new QMenu();
-    auto action_delete = new QAction("Delete");
+    auto action_delete = new QAction(tr("Delete"));
     connect(action_delete, &QAction::triggered, this, &TraceWidget::on_remove_clicked);
     ctxmenu->addAction(action_delete);
-    auto action_duplicate = new QAction("Duplicate");
+    auto action_duplicate = new QAction(tr("Duplicate"));
     connect(action_duplicate, &QAction::triggered, this, [=](){
         auto json = trace->toJSON();
         auto duplicate = new Trace();

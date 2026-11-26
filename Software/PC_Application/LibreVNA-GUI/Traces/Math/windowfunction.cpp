@@ -58,7 +58,7 @@ QWidget *WindowFunction::createEditor()
         cbType->addItem(typeToName((Type) i));
     }
 
-    layout->addRow(new QLabel("Type:"), cbType);
+    layout->addRow(new QLabel(tr("Type:")), cbType);
 
     QObject::connect(cbType, qOverload<int>(&QComboBox::currentIndexChanged), [=](int newIndex){
         if(layout->rowCount() > 1) {
@@ -70,7 +70,7 @@ QWidget *WindowFunction::createEditor()
         // add GUI elements for window types that have a parameter
         switch(type) {
         case Type::Gaussian:
-            paramLabel = new QLabel("Parameter σ:");
+            paramLabel = new QLabel(tr("Parameter σ:"));
             paramEdit = new SIUnitEdit("", " ", 3);
             paramEdit->setValue(gaussian_sigma);
             QObject::connect(paramEdit, &SIUnitEdit::valueChanged, [=](double newval) {

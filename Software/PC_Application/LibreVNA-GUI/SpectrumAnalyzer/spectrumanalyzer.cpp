@@ -118,7 +118,7 @@ SpectrumAnalyzer::SpectrumAnalyzer(AppWindow *window, QString name)
     eStart->setToolTip("Start frequency");
     connect(eStart, &SIUnitEdit::valueChanged, this, &SpectrumAnalyzer::SetStartFreq);
     connect(this, &SpectrumAnalyzer::startFreqChanged, eStart, &SIUnitEdit::setValueQuiet);
-    tb_sweep->addWidget(new QLabel("Start:"));
+    tb_sweep->addWidget(new QLabel(tr("Start:")));
     tb_sweep->addWidget(eStart);
 
     auto eCenter = new SIUnitEdit("Hz", " kMG", 6);
@@ -126,7 +126,7 @@ SpectrumAnalyzer::SpectrumAnalyzer(AppWindow *window, QString name)
     eCenter->setToolTip("Center frequency");
     connect(eCenter, &SIUnitEdit::valueChanged, this, &SpectrumAnalyzer::SetCenterFreq);
     connect(this, &SpectrumAnalyzer::centerFreqChanged, eCenter, &SIUnitEdit::setValueQuiet);
-    tb_sweep->addWidget(new QLabel("Center:"));
+    tb_sweep->addWidget(new QLabel(tr("Center:")));
     tb_sweep->addWidget(eCenter);
 
     auto eStop = new SIUnitEdit("Hz", " kMG", 6);
@@ -134,7 +134,7 @@ SpectrumAnalyzer::SpectrumAnalyzer(AppWindow *window, QString name)
     eStop->setToolTip("Stop frequency");
     connect(eStop, &SIUnitEdit::valueChanged, this, &SpectrumAnalyzer::SetStopFreq);
     connect(this, &SpectrumAnalyzer::stopFreqChanged, eStop, &SIUnitEdit::setValueQuiet);
-    tb_sweep->addWidget(new QLabel("Stop:"));
+    tb_sweep->addWidget(new QLabel(tr("Stop:")));
     tb_sweep->addWidget(eStop);
 
     auto eSpan = new SIUnitEdit("Hz", " kMG", 6);
@@ -142,7 +142,7 @@ SpectrumAnalyzer::SpectrumAnalyzer(AppWindow *window, QString name)
     eSpan->setToolTip("Span");
     connect(eSpan, &SIUnitEdit::valueChanged, this, &SpectrumAnalyzer::SetSpan);
     connect(this, &SpectrumAnalyzer::spanChanged, eSpan, &SIUnitEdit::setValueQuiet);
-    tb_sweep->addWidget(new QLabel("Span:"));
+    tb_sweep->addWidget(new QLabel(tr("Span:")));
     tb_sweep->addWidget(eSpan);
 
     auto bFull = new QPushButton(QIcon::fromTheme("zoom-fit-best", QIcon(":/icons/zoom-fit.png")), "");
@@ -178,35 +178,35 @@ SpectrumAnalyzer::SpectrumAnalyzer(AppWindow *window, QString name)
     eBandwidth->setToolTip("RBW");
     connect(eBandwidth, &SIUnitEdit::valueChanged, this, &SpectrumAnalyzer::SetRBW);
     connect(this, &SpectrumAnalyzer::RBWChanged, eBandwidth, &SIUnitEdit::setValueQuiet);
-    tb_acq->addWidget(new QLabel("RBW:"));
+    tb_acq->addWidget(new QLabel(tr("RBW:")));
     tb_acq->addWidget(eBandwidth);
 
-    tb_acq->addWidget(new QLabel("Window:"));
+    tb_acq->addWidget(new QLabel(tr("Window:")));
     cbWindowType = new QComboBox();
-    cbWindowType->addItem("None");
-    cbWindowType->addItem("Kaiser");
-    cbWindowType->addItem("Hann");
-    cbWindowType->addItem("Flat Top");
+    cbWindowType->addItem(tr("None"));
+    cbWindowType->addItem(tr("Kaiser"));
+    cbWindowType->addItem(tr("Hann"));
+    cbWindowType->addItem(tr("Flat Top"));
     cbWindowType->setCurrentIndex(1);
     connect(cbWindowType, qOverload<int>(&QComboBox::currentIndexChanged), [=](int index) {
        SetWindow((DeviceDriver::SASettings::Window) index);
     });
     tb_acq->addWidget(cbWindowType);
 
-    tb_acq->addWidget(new QLabel("Detector:"));
+    tb_acq->addWidget(new QLabel(tr("Detector:")));
     cbDetector = new QComboBox();
-    cbDetector->addItem("+Peak");
-    cbDetector->addItem("-Peak");
-    cbDetector->addItem("Sample");
-    cbDetector->addItem("Normal");
-    cbDetector->addItem("Average");
+    cbDetector->addItem(tr("+Peak"));
+    cbDetector->addItem(tr("-Peak"));
+    cbDetector->addItem(tr("Sample"));
+    cbDetector->addItem(tr("Normal"));
+    cbDetector->addItem(tr("Average"));
     cbDetector->setCurrentIndex(0);
     connect(cbDetector, qOverload<int>(&QComboBox::currentIndexChanged), [=](int index) {
        SetDetector((DeviceDriver::SASettings::Detector) index);
     });
     tb_acq->addWidget(cbDetector);
 
-    tb_acq->addWidget(new QLabel("Averaging:"));
+    tb_acq->addWidget(new QLabel(tr("Averaging:")));
     lAverages = new QLabel("0/");
     tb_acq->addWidget(lAverages);
     auto sbAverages = new QSpinBox;
@@ -234,8 +234,8 @@ SpectrumAnalyzer::SpectrumAnalyzer(AppWindow *window, QString name)
     tb_trackgen->addWidget(cbTrackGenEnable);
 
     cbTrackGenPort = new QComboBox();
-    cbTrackGenPort->addItem("Port 1");
-    cbTrackGenPort->addItem("Port 2");
+    cbTrackGenPort->addItem(tr("Port 1"));
+    cbTrackGenPort->addItem(tr("Port 2"));
     cbTrackGenPort->setCurrentIndex(0);
     connect(cbTrackGenPort, qOverload<int>(&QComboBox::currentIndexChanged), this, [=](int index) {
         SetTGPort(index + 1);
@@ -254,7 +254,7 @@ SpectrumAnalyzer::SpectrumAnalyzer(AppWindow *window, QString name)
     dbm->setKeyboardTracking(false);
     connect(dbm, qOverload<double>(&QDoubleSpinBox::valueChanged), this, &SpectrumAnalyzer::SetTGLevel);
     connect(this, &SpectrumAnalyzer::TGLevelChanged, dbm, &QDoubleSpinBox::setValue);
-    tb_trackgen->addWidget(new QLabel("Level:"));
+    tb_trackgen->addWidget(new QLabel(tr("Level:")));
     tb_trackgen->addWidget(dbm);
 
     tgOffset = new SIUnitEdit("Hz", " kMG", 6);
@@ -262,7 +262,7 @@ SpectrumAnalyzer::SpectrumAnalyzer(AppWindow *window, QString name)
     tgOffset->setToolTip("Tracking generator offset");
     connect(tgOffset, &SIUnitEdit::valueChanged, this, &SpectrumAnalyzer::SetTGOffset);
     connect(this, &SpectrumAnalyzer::TGOffsetChanged, tgOffset, &SIUnitEdit::setValueQuiet);
-    tb_trackgen->addWidget(new QLabel("Offset:"));
+    tb_trackgen->addWidget(new QLabel(tr("Offset:")));
     tb_trackgen->addWidget(tgOffset);
 
     normalize.enable = new QCheckBox("Normalize");
@@ -272,7 +272,7 @@ SpectrumAnalyzer::SpectrumAnalyzer(AppWindow *window, QString name)
     normalize.Level->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Fixed);
     normalize.Level->setValue(0);
     normalize.Level->setToolTip("Level to normalize to");
-    tb_trackgen->addWidget(new QLabel("To:"));
+    tb_trackgen->addWidget(new QLabel(tr("To:")));
     tb_trackgen->addWidget(normalize.Level);
     normalize.measure = new QPushButton("Measure");
     normalize.measure->setToolTip("Perform normalization measurement");
@@ -290,11 +290,11 @@ SpectrumAnalyzer::SpectrumAnalyzer(AppWindow *window, QString name)
     window->addDockWidget(Qt::LeftDockWidgetArea, tracesDock);
     docks.insert(tracesDock);
 
-    auto importAction = new QAction("CSV");
+    auto importAction = new QAction(tr("CSV"));
     connect(importAction, &QAction::triggered, traceWidget, &TraceWidgetSA::importDialog);
     importActions.push_back(importAction);
 
-    auto exportAction = new QAction("CSV");
+    auto exportAction = new QAction(tr("CSV"));
     connect(exportAction, &QAction::triggered, traceWidget, &TraceWidgetSA::exportDialog);
     exportActions.push_back(exportAction);
 
@@ -350,7 +350,7 @@ void SpectrumAnalyzer::deactivate()
 void SpectrumAnalyzer::initializeDevice()
 {
     if(!window->getDevice()->supports(DeviceDriver::Feature::SA)) {
-        InformationBox::ShowError("Unsupported", "The connected device does not support spectrum analyzer mode");
+        InformationBox::ShowError(tr("Unsupported"), tr("The connected device does not support spectrum analyzer mode"));
         return;
     }
     bool hasTG = window->getDevice()->supports(DeviceDriver::Feature::SATrackingGenerator);
@@ -1316,7 +1316,7 @@ void SpectrumAnalyzer::deviceInfoUpdated()
     auto tgPort = cbTrackGenPort->currentIndex();
     cbTrackGenPort->clear();
     for(unsigned int i=0;i<DeviceDriver::getInfo(window->getDevice()).Limits.SA.ports;i++) {
-        cbTrackGenPort->addItem("Port "+QString::number(i+1));
+        cbTrackGenPort->addItem(tr("Port %1").arg(i+1));
     }
     SetTGPort(tgPort);
 }
