@@ -132,10 +132,12 @@ QString Mode::TypeToName(Mode::Type t)
 
 QString Mode::TypeToIdString(Mode::Type t)
 {
+    // Canonical (English) name used for serialization. Must stay identical to
+    // the original upstream format so setup files remain interchangeable.
     switch(t) {
-    case Type::VNA: return "VNA";
-    case Type::SG: return "SG";
-    case Type::SA: return "SA";
+    case Type::VNA: return "Vector Network Analyzer";
+    case Type::SG: return "Signal Generator";
+    case Type::SA: return "Spectrum Analyzer";
     default: return "Invalid";
     }
 }
