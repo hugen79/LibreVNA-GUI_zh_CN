@@ -50,6 +50,14 @@ PreferencesDialog::PreferencesDialog(Preferences *pref, QWidget *parent) :
     assignComboIds(ui->GraphsDefaultTransmission, {"XY Plot", "Polar Chart", "Waterfall", "Eye Diagram"});
     assignComboIds(ui->GraphsDefaultReflection, {"XY-Plot", "Smith Chart", "Polar Chart", "Waterfall"});
 
+    // Stable English identifiers for the preference page tree items, so page
+    // switching keeps working when the displayed text is translated.
+    const QStringList treeIds = {"Startup", "Acquisition", "Graphs", "Marker",
+                                 "SCPI Server", "Streaming Servers", "Debug", "Device Drivers"};
+    for (int i = 0; i < ui->treeWidget->topLevelItemCount() && i < treeIds.size(); ++i) {
+        ui->treeWidget->topLevelItem(i)->setData(0, Qt::UserRole, treeIds.at(i));
+    }
+
     auto setDefaultSettingsEnabled = [=](bool en) {
         ui->StartupSweepType->setEnabled(en);
         ui->StartupSweepStart->setEnabled(en);
@@ -195,7 +203,10 @@ PreferencesDialog::PreferencesDialog(Preferences *pref, QWidget *parent) :
 
     // Page selection
     connect(ui->treeWidget, &QTreeWidget::currentItemChanged, [=](QTreeWidgetItem *current, QTreeWidgetItem *) {
-        auto name = current->text(0);
+        auto name = current->data(0, Qt::UserRole).toString();
+        if (name.isEmpty()) {
+            name = current->text(0);
+        }
         // remove any potential white space in name (can't have whitespace in page names)
         name.replace(" ", "");
         for(int i=0;i<ui->pageWidget->count();i++) {
